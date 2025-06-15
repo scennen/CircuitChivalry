@@ -23,6 +23,7 @@ pip install pygame
 python main.py
 ```
 
+```
 CircuitChivalry/
 │
 ├── venv/
@@ -67,6 +68,7 @@ CircuitChivalry/
 │       └── cutscene.py    
 │
 ├── assets/
-│   ├── images/
-│   ├── music/
-│   └── fonts/
+    ├── images/
+    ├── music/
+    └── fonts/
+```
