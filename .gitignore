@@ -1,5 +1,18 @@
-venv
-.venv
-.env
 venv/
-env/
+
+__pycache__/
+.mypy_cache/
+*.pyc
+*.pyo
+
+.vscode/
+.idea/
+
+.DS_Store
+Thumbs.db
+
+*.log
+*.tmp
+
+# Файлы ОС
+desktop.ini
