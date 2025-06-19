@@ -21,3 +21,24 @@ python main.py
 
 - Все уровни и переходы можно менять в файле `main.py`.
 - Для корректной работы убедитесь, что структура папок и файлов соответствует проекту.
+
+## SOLID
+S — Single Responsibility Principle
+Platform — только платформа, не содержит логики врагов или игрока.
+BaseFighter — только логика бойца, не занимается, например, генерацией уровней.
+
+O — Open/Closed Principle
+BaseFighter открыт для расширения (через наследование), но закрыт для модификации.
+Player/Enemy/PlayerNeon/EnemyNeon расширяют поведение, не меняя базовый класс.
+
+L — Liskov Substitution Principle
+PlayerNeon может быть использован вместо Player (например, в get_player_for_level).
+EnemyNeon может быть использован вместо Enemy.
+
+I — Interface Segregation Principle
+draw и update реализованы отдельно, можно использовать только нужные методы.
+handle_input реализован только там, где нужен (например, у игрока, но не у врага).
+
+D — Dependency Inversion Principle
+BaseLevel не зависит от конкретных классов врагов, а использует абстракции (через параметры enemy_type).
+main.py использует абстракции уровней и игроков, не завязан на конкретные реализации.
