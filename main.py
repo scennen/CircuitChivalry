@@ -197,7 +197,7 @@ def main_menu(screen: "pygame.Surface", clock: "pygame.time.Clock", can_continue
     button_height = 60
     button_width = 400
     button_gap = 24
-    # --- Музыка: глобальный флаг ---
+    #Музыка: глобальный флаг
     if not hasattr(play_music, 'enabled'):
         play_music.enabled = True
     # Кнопка музыки по центру и внизу
@@ -401,7 +401,7 @@ def game_win_screen(screen: "pygame.Surface", clock: "pygame.time.Clock", font: 
         title_rect = title_surface.get_rect(
             center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 - 120))
         screen.blit(title_surface, title_rect)
-        # Информационный текст (уменьшенный шрифт)
+        # Информационный текст
         lines = info_text.split('\n')
         for i, line in enumerate(lines):
             info_surface = text_font.render(line, True, WHITE)
@@ -433,7 +433,7 @@ def main():
     level_entries = get_levels()
 
     def update_music_for_level(current):
-        # Для TransitionLevel (боевые переходы)
+        # Для TransitionLevel
         if hasattr(current, '__class__') and current.__class__.__name__ == 'TransitionLevel':
             play_music(os.path.join('assets', 'music', 'Derezzed.mp3'))
         # Для шлюза
@@ -448,7 +448,7 @@ def main():
         # Для босса
         elif hasattr(current, '__class__') and current.__class__.__name__ == 'BossLevel':
             play_music(os.path.join('assets', 'music', 'End of Line.mp3'))
-        # Для обычных экранов-переходов (TransitionScreen, но не TransitionLevel) — выключить музыку
+        # Для обычных экранов-переходов выключить музыку
         elif isinstance(current, TransitionScreen):
             pygame.mixer.music.stop()
             play_music.current = None
@@ -535,7 +535,6 @@ def main():
     LEVELS = [make_level(e) for e in level_entries]
     level_idx = 0
     current = LEVELS[level_idx]
-    # Определяем floor_y для первого уровня, если это уровень
     if isinstance(current, SurfaceLevel):
         floor_y = current.floor_y
     else:
@@ -557,7 +556,6 @@ def main():
     floor_platform = get_floor_platform(current)
     update_music_for_level(current)
 
-    # --- ВРАГИ НА ПЕРВОМ УРОВНЕ ---
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -637,7 +635,7 @@ def main():
                    is_auto_transition(LEVELS[level_idx])):
                 current = LEVELS[level_idx]
                 update_music_for_level(current)
-                # Анимация прозрачности + автопереход
+                # Анимация прозрачности
                 fade_in_time = 0.5
                 show_time = 1.0
                 fade_out_time = 0.5
@@ -685,20 +683,19 @@ def main():
             if hasattr(current, 'update_enemies'):
                 current.update_enemies(
                     [floor_platform] + getattr(current, 'platforms', []), knight)
-
-            # --- ПОДБОР СЕРДЕЧЕК ---
+                
             if hasattr(current, 'hearts'):
                 for heart in current.hearts[:]:
                     if knight.rect.colliderect(heart.rect) and knight.hp < knight.max_hp:
                         knight.hp = min(
                             knight.max_hp, knight.hp + heart.heal_amount)
                         current.hearts.remove(heart)
-            # --- ПОДБОР ГОЛУБОГО КРУГА ---
+
             if hasattr(current, 'blue_orb') and current.blue_orb:
                 if knight.rect.colliderect(current.blue_orb.rect):
                     knight.hp = knight.max_hp
                     current.blue_orb = None
-            # --- ПОДБОР ДОПОЛНИТЕЛЬНЫХ СФЕР ---
+
             if hasattr(current, 'extra_blue_orbs'):
                 for orb in current.extra_blue_orbs[:]:
                     if knight.rect.colliderect(orb.rect):
@@ -742,7 +739,6 @@ def main():
                             running = False
                             break
                         elif level_idx > 20:
-                            # После 10 уровня (21-й элемент) — поздравление
                             game_win_screen(screen, clock, font)
                             running = False
                             break

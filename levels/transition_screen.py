@@ -3,8 +3,6 @@ from typing import Tuple
 import os
 import math
 
-# Класс для экрана перехода между уровнями
-
 
 class TransitionScreen:
     def __init__(
@@ -63,7 +61,6 @@ class TransitionScreen:
         screen.fill(self.bg_color)  # Заливаем фон
         rendered_lines: list[tuple[pygame.Surface, int]] = []
         total_height = 0
-        # Render title if present
         if self.title:
             # Анимация: покачивание по Y (синусоида)
             wave_offset = int(math.sin(self.anim_time * 2.0) * 8)
@@ -72,7 +69,6 @@ class TransitionScreen:
             )
             rendered_lines.append((title_surface, wave_offset))
             total_height += title_surface.get_height()
-        # Render description lines if present
         # пульсация прозрачности
         desc_alpha = int(180 + 60 * math.sin(self.anim_time * 1.5))
         if self.description:
@@ -85,7 +81,6 @@ class TransitionScreen:
                 desc_surface.set_alpha(desc_alpha)
                 rendered_lines.append((desc_surface, 0))
                 total_height += desc_surface.get_height()
-        # Calculate starting y to center the block
         screen_w, screen_h = self.screen_size
         y = (screen_h - total_height) // 2
         for surf, offset in rendered_lines:
@@ -94,5 +89,4 @@ class TransitionScreen:
             y += surf.get_height()
 
     def handle_event(self, event):
-        # Здесь можно обработать события, например, нажатие клавиш
         pass

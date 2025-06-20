@@ -3,7 +3,6 @@ from levels.transition_screen import TransitionScreen
 import pygame
 from typing import Tuple
 
-# Здесь определяются классы уровней и переходов
 
 
 class SurfaceLevel(BaseLevel):
@@ -34,7 +33,7 @@ class TransitionLevel(BaseLevel):
         enemy_count: int = 5,
         enemy_type: str = 'medieval'
     ):
-        # В этом уровне нет надписи слева сверху
+        # нет надписи слева сверху
         super().__init__(
             background_path=background_path,
             enemy_count=enemy_count,
@@ -118,8 +117,6 @@ class BossLevel(BaseLevel):
             caption_color=(255, 255, 255),
             caption_font_path="assets/fonts/alagard-12px-unicode.otf"
         )
-
-# Ниже идут классы для экранов-переходов
 
 
 class BattleIntroTransition(TransitionScreen):

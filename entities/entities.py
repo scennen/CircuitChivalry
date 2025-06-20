@@ -21,7 +21,6 @@ class Enemy(BaseFighter):
     def __init__(self, x: int, y: int, hp: int = 100, speed: int = 2, sprite_type: str = "enemy"):
         super().__init__(x, y, sprite_type, ENEMY_SPRITE_FRAMES, hp)
         self.speed = speed  # Скорость врага
-        # Здесь можно добавить логику AI, атаки и т.д.
 
 
 class ShadowCopy(EnemyNeon):
@@ -96,7 +95,7 @@ class CoreGuardian(pygame.sprite.Sprite):
 
     def update(self, platforms: Optional[List[Any]] = None, player: Optional[Any] = None) -> None:
         if self.is_dead:
-            return  # Если мертв, ничего не делаем
+            return
         # Восстановление здоровья раз в 60 update (примерно 1 секунда)
         if self.hp < self.max_hp:
             self.heal_timer += 1

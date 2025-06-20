@@ -8,7 +8,7 @@ class Platform(pygame.sprite.Sprite):
         self.image.fill((0, 0, 0, 0))  # Прозрачный прямоугольник
         self.rect = self.image.get_rect(
             topleft=(x, y))  # Платформа по координатам
-        self.hp = hp  # Здоровье платформы (можно ломать)
+        self.hp = hp  # Здоровье платформы
 
 
 class Heart(pygame.sprite.Sprite):

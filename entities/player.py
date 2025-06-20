@@ -5,7 +5,7 @@ from typing import Dict, List, Tuple
 
 
 class Player(pygame.sprite.Sprite):
-    # Количество кадров в каждом спрайт-листе (укажите реальные значения для каждого PNG)
+    # Количество кадров в каждом спрайт-листе
     SPRITE_FRAMES = {
         "IDLE": 7,
         "RUN": 8,
@@ -32,7 +32,7 @@ class Player(pygame.sprite.Sprite):
         self.attack_timer = 0  # Таймер для смены кадров атаки
         # Путь к assets относительно корня проекта
         base_dir = os.path.dirname(os.path.dirname(
-            os.path.dirname(os.path.abspath(__file__))))  # type: ignore
+            os.path.dirname(os.path.abspath(__file__))))
         sprite_dir = os.path.join(
             base_dir, "assets", "images", "sprites", "knight")
 
@@ -42,7 +42,7 @@ class Player(pygame.sprite.Sprite):
             sheet_path = os.path.join(
                 sprite_dir, f"{state.replace('ATTACK', 'ATTACK ')}.png")
             if not os.path.exists(sheet_path):
-                continue  # Если файла нет, пропускаем
+                continue
             sheet = pygame.image.load(sheet_path).convert_alpha()
             frame_width = sheet.get_width() // num_frames
             frame_height = sheet.get_height()
@@ -126,11 +126,10 @@ class Player(pygame.sprite.Sprite):
                     self.attack_timer = self.ATTACK_FRAME_DURATION  # Следующий кадр атаки
             return  # Во время атаки блокируем другие действия
 
-        # Прыжок по механике босса (рандомно, если на земле, не атакует, не защищается)
         if self.jump_cooldown > 0:
             self.jump_cooldown -= 1
         if not self.is_attacking and not self.is_defending and self.on_ground and self.jump_cooldown == 0:
-            if random.random() < 1/90:  # Шанс прыжка примерно раз в 1.5 сек
+            if random.random() < 1/90:
                 self.vel_y = -self.jump_power * 1.2
                 self.on_ground = False
                 self.state = "JUMP"

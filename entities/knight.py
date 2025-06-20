@@ -55,11 +55,9 @@ class Player(BaseFighter):
         self.jump_time = 0  # Время прыжка
         self.max_jump_time = 14  # Максимальное время прыжка
         self.jump_buffer = 0  # Буфер прыжка
-        self.jump_buffer_max = 8  # 8 кадров = ~0.13 сек
-        self.coyote_time = 0  # Койот-тайм (время после схода с платформы)
-        self.coyote_time_max = 8  # 8 кадров = ~0.13 сек
-        # Остальная логика Player (физика, управление, атаки и т.д.)
-        # ...
+        self.jump_buffer_max = 8  # 8 кадров
+        self.coyote_time = 0
+        self.coyote_time_max = 8  # 8 кадров
 
     def handle_input(self, keys: Any, mouse_buttons: Optional[Any] = None) -> None:
         self.vel_x = 0
@@ -119,7 +117,6 @@ class Player(BaseFighter):
         # JUMP BUFFER
         if self.jump_buffer > 0:
             self.jump_buffer -= 1
-        # Прыжок с учетом буфера и койот-тайма
         do_jump = False
         if self.jump_buffer > 0 and (self.coyote_time > 0 or self.jump_count < self.max_jump_count):
             do_jump = True
@@ -262,22 +259,19 @@ class Enemy(BaseFighter):
         self.last_damage_timer = 0  # Ограничение урона по игроку
         self.damage_dealt_this_attack = False
         self.jump_cooldown = 0
-        # Остальная логика Enemy (AI, атаки и т.д.)
-        # ...
 
     def update(self, platforms: pygame.sprite.Group, player: Optional[BaseFighter] = None) -> None:
         if self.state == "DEATH":
             self.update_death_animation()
             return
-        # --- Рандомный прыжок (как у босса) ---
+        # Рандомный прыжок
         if self.jump_cooldown > 0:
             self.jump_cooldown -= 1
         if not self.is_attacking and self.on_ground and self.jump_cooldown == 0:
             if random.random() < 1/90:  # шанс прыжка примерно раз в 1.5 сек
-                self.vel_y = -15  # сила прыжка (можно подстроить)
+                self.vel_y = -15  # сила прыжка
                 self.on_ground = False
                 self.jump_cooldown = 60
-        # AI: двигаться к игроку и атаковать, если рядом
         if player is not None:
             dx = player.rect.centerx - self.rect.centerx
             if abs(dx) > self.attack_range:
@@ -322,7 +316,7 @@ class Enemy(BaseFighter):
             self.attack_cooldown -= 1
         if self.last_damage_timer > 0:
             self.last_damage_timer -= 1
-        # --- Анимация удара ---
+        # Анимация удара
         if self.is_attacking:
             frames = self.frames[self.current_attack] if self.current_attack in self.frames else self.frames["IDLE"]
             self.anim_time += self.attack_anim_speed
@@ -340,7 +334,7 @@ class Enemy(BaseFighter):
             self.rect = self.image.get_rect()
             self.rect.midbottom = old_midbottom
             self._update_hitbox()
-            # Урон на 3-м кадре (как у игрока)
+            # Урон на 3-м кадре
             if player and self.frame_idx == 2 and not self.damage_dealt_this_attack:
                 attack_rect = self.hitbox.copy()
                 if self.facing_right:
@@ -356,7 +350,7 @@ class Enemy(BaseFighter):
             if not self.is_attacking:
                 self.damage_dealt_this_attack = False
             return
-        # --- Обычная анимация ---
+        # Обычная анимация
         self.anim_time += self.anim_speed
         if self.anim_time >= 1:
             self.anim_time = 0

@@ -109,7 +109,7 @@ class BaseLevel:
         return enemies
 
     def create_platforms(self):
-        return []  # Удаляем все платформы, кроме пола (пол рисуется отдельно)
+        return []  # Удаляем все платформы, кроме пола
 
     def create_hearts(self):
         return []  # Сердечки по умолчанию отсутствуют
